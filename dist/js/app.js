@@ -1,0 +1,1 @@
+var viewModel={address:ko.observable(""),city:ko.observable(""),generateMap:function(){alert(this.address()+" "+this.city()),$("#mapDiv").append(googleMap)}};viewModel.location=ko.computed(function(){return this.address+" "+this.city},viewModel),ko.applyBindings(viewModel);

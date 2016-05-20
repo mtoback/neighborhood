@@ -10,8 +10,26 @@
     <link href="css/style.css" rel="stylesheet">
    </head>
    <body>
+   	<div class="container">
+   		<H1>Know your Neighborhood!</H1>
+   		<div class="row">
+   			<label for="address">Address</label><input id="address" data-bind="value: address" type="text"/>
+   			<label for="city">City</label><input id="city" data-bind="value: city" type="text"/>
+      </div>
+      <div class="row">
+      <p>
+          Search For:
+          <select id="searchTag" data-bind="options: searches,
+                       optionsCaption: 'Choose...'"></select>
+      </p>
+  			<button data-bind="click: generateMap">Find</button>
+   		</div>
+		<div id="googleMap" style="width:500px;height:380px;"></div>
+   	</div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>
     <script src="js/lib/knockout-3.4.0.js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+	<script src="js/lib/oauth-signature.min.js"></script>
     <script src="js/app.js"></script>
    </body>
 </html>
