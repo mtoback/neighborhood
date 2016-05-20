@@ -3,6 +3,8 @@ var viewModel = {
 	city    : ko.observable(''),
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
 	searchTag : ko.observable(),
+	// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
+	// lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 	generateMap : function(){
 		$.ajax({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.location(),
 			success: function(result){
