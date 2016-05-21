@@ -20,10 +20,13 @@
       <p>
           Search For:
           <select id="searchTag" data-bind="options: searches,
-                       optionsCaption: 'Choose...'"></select>
+                       optionsCaption: 'Show All...'"></select>
       </p>
   			<button data-bind="click: generateMap">Find</button>
    		</div>
+      <div class="row">
+        <p data-bind="text: localWeather"/>
+      </div>
 		<div id="googleMap" style="width:500px;height:380px;"></div>
    	</div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>

@@ -3,13 +3,48 @@ var viewModel = {
 	city    : ko.observable(''),
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
 	searchTag : ko.observable(),
+	localWeather : ko.observable(),
 	// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
 	// lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
+	weather: function(lat, lng){
+		$.ajax({
+			url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true',
+			success: function(result){
+				var components = result.results[0].address_components;
+				var len = components.length;
+				var foundCity = false;
+                var foundState = false;
+                var city = '';
+                var state = '';
+                // continue in loop until city and state found or items exhausted
+				for(var i=0; i< len && !(foundCity && foundState); i++){
+					var component = components[i];
+					if (component.types[0] === 'locality'){
+						city = component.long_name;
+						foundCity = true;
+					} else if (component.types[0]=== "administrative_area_level_1"){
+						state = component.short_name;
+						found_state = true;
+					}
+				}
+				$.ajax({
+					url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json',
+					success: function(result){
+						var forecast = result.forecast.simpleforecast.forecastday[0];
+						var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
+						var conditions = forecast.conditions;
+						viewModel.localWeather(conditions + ':' + temp);
+					}
+				})
+			}
+		})
+	},
 	generateMap : function(){
 		$.ajax({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.location(),
 			success: function(result){
-				var lat = result.results[0].geometry.location.lat;
-				var lng =  result.results[0].geometry.location.lng;
+			  var lat = result.results[0].geometry.location.lat;
+			  var lng =  result.results[0].geometry.location.lng;
+			  viewModel.weather(lat,lng);
 			  var mapProp = {
 			    center:new google.maps.LatLng(lat,lng),
 			    zoom:12,
@@ -28,7 +63,7 @@ var viewModel = {
 			  };
 
 			  var terms = 'food';
-			  var near = 'Saratoga+CA';
+			  var near = viewModel.location();
 
 				var accessor = {
 				    consumerSecret : auth.consumerSecret,
