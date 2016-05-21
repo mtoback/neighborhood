@@ -11,7 +11,9 @@
    </head>
    <body>
    	<div class="container">
+      <div class="row">
    		<H1>Know your Neighborhood!</H1>
+      </div>
    		<div class="row">
    			<label for="address">Address</label><input id="address" data-bind="value: address" type="text"/>
    			<label for="city">City</label><input id="city" data-bind="value: city" type="text"/>
@@ -22,14 +24,23 @@
           <select id="searchTag" data-bind="options: searches,
                        optionsCaption: 'Show All...'"></select>
       </p>
+    </div>
+      <div class="row">
+        <span>Size</span><div style="width:100px;" id="slider"></div>
+        <span data-bind="text: radius_filter"></span>
+        <span data-bind="text: zoom"></span>
+      </div>
+      <div>
   			<button data-bind="click: generateMap">Find</button>
    		</div>
       <div class="row">
-        <p data-bind="text: localWeather"/>
+        <p class="weather" data-bind="text: localWeather"/>
       </div>
-		<div class="row" id="googleMap" style="width:500px;height:380px;"></div>
+		<div class="row"  id="googleMap" style="width:500px;height:380px;"></div>
    	</div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>
+    <script src="js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="js/lib/jquery-ui-1.11.4/jquery-ui.min.css">
     <script src="js/lib/knockout-3.4.0.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
 	<script src="js/lib/oauth-signature.min.js"></script>

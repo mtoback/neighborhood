@@ -24,6 +24,12 @@ module.exports = function(grunt){
           {expand: true, cwd: 'css/lib/bootstrap-3.3.6-dist/css',
           src: ['bootstrap.min.css'],
           dest: 'dist/css/lib/bootstrap-3.3.6-dist/css/'}
+          ]},
+          images:{
+          files: [
+          {expand: true, cwd: 'img',
+          src: ['icons/*','markers/*'],
+          dest: 'dist/img/'}
           ]}
     },
     htmlmin: {                     // Task

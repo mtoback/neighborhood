@@ -4,6 +4,7 @@ var viewModel = {
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
 	searchTag : ko.observable(),
 	localWeather : ko.observable(),
+	zoom: ko.observable(12),
 	// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
 	// lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 	weather: function(lat, lng){
@@ -35,9 +36,9 @@ var viewModel = {
 						var conditions = forecast.conditions;
 						viewModel.localWeather(conditions + ':' + temp);
 					}
-				})
+				});
 			}
-		})
+		});
 	},
 	generateMap : function(){
 		$.ajax({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.location(),
@@ -47,7 +48,7 @@ var viewModel = {
 			  viewModel.weather(lat,lng);
 			  var mapProp = {
 			    center:new google.maps.LatLng(lat,lng),
-			    zoom:12,
+			    zoom: viewModel.zoom(),
 			    mapTypeId:google.maps.MapTypeId.ROADMAP
 			  };
 			  $("#googleMap").show();
@@ -78,7 +79,8 @@ var viewModel = {
 				      oauth_version : '1.0',
 				      callback: 'cb',
 				      term: $("#searchTag").val(),
-				      location: viewModel.location()
+				      location: viewModel.location(),
+				      radius_filter: viewModel.radius_filter()
 				    };
 				var message = {
 				    'action' : 'http://api.yelp.com/v2/search',
@@ -118,7 +120,7 @@ var viewModel = {
 						  } else {
 						    marker.setAnimation(google.maps.Animation.BOUNCE);
 						  }
-						};
+						}
 						marker.addListener('click', toggleBounce);
 						// To add the marker to the map, call setMap();
 						marker.setMap(map);
@@ -133,12 +135,34 @@ var viewModel = {
 	}});
 },
 };
+
+viewModel.radius_filter = ko.computed(function(){
+		if(this.zoom() === 11){
+			return 40000;
+		} else if(this.zoom() === 12) {
+			return 20000;
+		} else if (this.zoom() === 13){
+			return 10000;
+		} else {
+			return 10000;
+		}
+	}, viewModel);
 viewModel.location = ko.computed(function(){
 	return this.address() + ',' + this.city();
 }, viewModel);
 
 ko.applyBindings(viewModel);
-
+$( "#slider" ).slider({
+	  // allow value to go from 11->12->13
+      value: 250,
+      min: 0,
+      max: 500,
+      step: 250,
+      slide: function( event, ui ) {
+        var value = ui.value;
+        viewModel.zoom(11+value/250);
+      }
+    });
 function initialize() {
   var mapProp = {
     center:new google.maps.LatLng(51.508742,-0.120850),
