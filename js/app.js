@@ -58,6 +58,13 @@ var viewModel = {
 	},
 	generateMap : function(){
 		$.ajax({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.location(),
+			error: function (xhr, ajaxOptions, thrownError) {
+			        if (xhr.status === 404){
+			        	alert("internet failure occurred. Please check your connection");
+			        } else {
+			        	alert("unknown error occurred... status = " + xhr.status);
+			        }
+			      },
 			success: function(result){
 			  var lat = result.results[0].geometry.location.lat;
 			  var lng =  result.results[0].geometry.location.lng;
@@ -150,8 +157,11 @@ var viewModel = {
 					}
 			      },
 					error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
-					        alert(thrownError);
+					        if (xhr.status === 404){
+					        	alert("internet failure occurred. Please check your connection");
+					        } else {
+					        	alert("unknown error occurred... status = " + xhr.status);
+					        }
 					      }
     });
 
