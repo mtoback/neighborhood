@@ -33,7 +33,7 @@
   -->
       <div class="row">
         <div class="col-md-12">
-        <span>Size</span><div style="width:100px;" id="slider"></div>
+        <span>Size</span><div id="slider"></div>
         </div>
       </div>
       <div>
@@ -44,13 +44,13 @@
         <input data-bind="value: filter"><button data-bind="click: filterMap">Filter</button>
       </div>
    		</div>
-      <ul id="search" style="display:none; border: 1px solid lightgrey; width: 300px; height: 200px; overflow: auto; border=" data-bind="foreach: displayMarkers">
-        <li style="list-style:none;"><a href="#" data-bind="text: title, attr:{href: url}"></a></li>
+      <ul id="search"  data-bind="foreach: displayMarkers">
+        <li class="search-item" ><a href="#" data-bind="text: title, attr:{href: url}"></a></li>
       </ul>
       <div class="row">
         <p class="weather" data-bind="text: localWeather"/>
       </div>
-		<div class="row"  id="googleMap" style="width:500px;height:380px;"></div>
+		<div class="row"  id="googleMap" ></div>
    	</div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>
     <script src="js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
