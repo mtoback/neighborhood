@@ -8,7 +8,7 @@ width:100px;
 
 #search {
    display:none; b
-   order: 1px solid lightgrey;
+   border: 1px solid lightgrey;
    width: 300px;
    height: 200px;
    overflow: auto;
@@ -21,4 +21,10 @@ width:100px;
 #googleMap {
    width:500px;
    height:380px;
+}
+
+#about {
+	height: 100px;
+    border: 2px solid lightgrey;
+    display: none;
 }

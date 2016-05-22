@@ -1,6 +1,6 @@
 var viewModel = {
-	address : ko.observable(''),
-	city    : ko.observable(''),
+	address : ko.observable('12221 Saraglen Drive'),
+	city    : ko.observable('Saratoga CA'),
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
 	markers : ko.observableArray(),
 	displayMarkers: ko.observableArray(),
@@ -141,12 +141,14 @@ var viewModel = {
 						});
 						viewModel.markers.push(marker);
 						viewModel.displayMarkers.push(marker);
-						function toggleBounce() {
+						function toggleBounce(item) {
 						  if (marker.getAnimation() !== null) {
 						    marker.setAnimation(null);
 						  } else {
 						    marker.setAnimation(google.maps.Animation.BOUNCE);
 						  }
+						  $("#about").html("<a href='" + marker.url + "'>'" + marker.title + "</a>");
+						  $("#about").show();
 						}
 						marker.addListener('click', toggleBounce);
 						// To add the marker to the map, call setMap();
@@ -212,3 +214,4 @@ function initialize() {
 }
 $("#googleMap").hide();
 google.maps.event.addDomListener(window, 'load', initialize);
+viewModel.generateMap();
