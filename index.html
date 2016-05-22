@@ -15,8 +15,12 @@
    		<H1>Know your Neighborhood!</H1>
       </div>
    		<div class="row">
+        <div class="col-md-6 col-sm-12">
    			<label for="address">Address</label><input id="address" data-bind="value: address" type="text"/>
+      </div>
+      <div class="col-md-6 col-sm-12">
    			<label for="city">City</label><input id="city" data-bind="value: city" type="text"/>
+        </div>
       </div>
       <!-- I really wanted to do this! Will get back to it later
       <div class="row">
@@ -28,11 +32,17 @@
     </div>
   -->
       <div class="row">
+        <div class="col-md-12">
         <span>Size</span><div style="width:100px;" id="slider"></div>
+        </div>
       </div>
       <div>
+        <div class="col-md-6">
   			<button data-bind="click: generateMap">Find</button>
+      </div>
+      <div class="col-md-6">
         <input data-bind="value: filter"><button data-bind="click: filterMap">Filter</button>
+      </div>
    		</div>
       <ul id="search" style="display:none; border: 1px solid lightgrey; width: 300px; height: 200px; overflow: auto; border=" data-bind="foreach: displayMarkers">
         <li style="list-style:none;"><a href="#" data-bind="text: title, attr:{href: url}"></a></li>

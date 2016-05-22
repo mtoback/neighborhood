@@ -18,7 +18,7 @@ var viewModel = {
 					viewModel.displayMarkers.push(viewModel.markers()[i]);
 				}
 			}
-			setMapOnAll(null, viewModel.displayMarkers());
+			setMapOnAll(map, viewModel.displayMarkers());
 		}
 	},
 	// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
@@ -95,7 +95,7 @@ var viewModel = {
 				      oauth_signature_method: 'HMAC-SHA1',
 				      oauth_version : '1.0',
 				      callback: 'cb',
-				      term: $("#searchTag").val(),
+				      term: "restaurant",
 				      location: viewModel.location(),
 				      radius_filter: viewModel.radius_filter()
 				    };
