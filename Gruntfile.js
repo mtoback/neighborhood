@@ -23,13 +23,25 @@ module.exports = function(grunt){
           files: [
           {expand: true, cwd: 'css/lib/bootstrap-3.3.6-dist/css',
           src: ['bootstrap.min.css'],
-          dest: 'dist/css/lib/bootstrap-3.3.6-dist/css/'}
+          dest: 'dist/css/lib/bootstrap-3.3.6-dist/css/'},
+          {expand: true, cwd: 'js/lib',
+          src: ['jquery-2.2.3.min.js','knockout-3.4.0.js','oauth-signature.min.js'],
+          dest: 'dist/js/lib'},
+          {expand: true, cwd: 'js/lib/jquery-ui-1.11.4',
+          src: ['jquery-ui.min.js','jquery-ui.min.css'],
+          dest: 'dist/js/lib/jquery-ui-1.11.4'}
           ]},
-          images:{
+          images1:{
           files: [
           {expand: true, cwd: 'img',
           src: ['icons/*','markers/*'],
           dest: 'dist/img/'}
+          ]},
+          images2:{
+          files: [
+          {expand: true, cwd: 'js/lib/jquery-ui-1.11.4/images/',
+          src: ['*'],
+          dest: 'dist/js/lib/jquery-ui-1.11.4/images/'}
           ]}
     },
     htmlmin: {                     // Task
