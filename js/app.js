@@ -2,9 +2,25 @@ var viewModel = {
 	address : ko.observable(''),
 	city    : ko.observable(''),
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
+	markers : ko.observableArray(),
+	displayMarkers: ko.observableArray(),
 	searchTag : ko.observable(),
 	localWeather : ko.observable(),
+	filter: ko.observable(""),
 	zoom: ko.observable(12),
+	filterMap: function(){
+		var filter = viewModel.filter();
+		if (viewModel.markers().length > 0){
+			setMapOnAll(null, viewModel.displayMarkers());
+			viewModel.displayMarkers.removeAll();
+			for (var i=0;i<viewModel.markers().length;i++){
+				if(viewModel.markers()[i].title.indexOf(filter)> -1){
+					viewModel.displayMarkers.push(viewModel.markers()[i]);
+				}
+			}
+			setMapOnAll(null, viewModel.displayMarkers());
+		}
+	},
 	// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
 	// lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 	weather: function(lat, lng){
@@ -52,7 +68,8 @@ var viewModel = {
 			    mapTypeId:google.maps.MapTypeId.ROADMAP
 			  };
 			  $("#googleMap").show();
-			  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			  // this should be visible at the top level to enable us to control it
+			  map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 			  var auth = {
 			    consumerKey : "IuMIJl585jfMDHz7spOj3w",
 			    consumerSecret : "8qnDc0yEa59ZHfXN1uM3XY-RcW4",
@@ -112,8 +129,11 @@ var viewModel = {
 						var marker = new google.maps.Marker({
 						    position: myLatlng,
 							animation: google.maps.Animation.DROP,
-						    title: name
+						    title: name,
+						    url: url
 						});
+						viewModel.markers.push(marker);
+						viewModel.displayMarkers.push(marker);
 						function toggleBounce() {
 						  if (marker.getAnimation() !== null) {
 						    marker.setAnimation(null);
@@ -125,6 +145,9 @@ var viewModel = {
 						// To add the marker to the map, call setMap();
 						marker.setMap(map);
 					});
+					if (businesses.length > 0){
+						$("#search").show();
+					}
 			      },
 					error: function (xhr, ajaxOptions, thrownError) {
 					        alert(xhr.status);
@@ -136,6 +159,12 @@ var viewModel = {
 },
 };
 
+// Sets the map on all markers in the array.
+function setMapOnAll(map, markers) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
 viewModel.radius_filter = ko.computed(function(){
 		if(this.zoom() === 11){
 			return 40000;
