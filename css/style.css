@@ -6,6 +6,9 @@
 width:100px;
 }
 
+body {
+  margin-left: 25px;
+}
 #search {
    display:none; b
    border: 1px solid lightgrey;

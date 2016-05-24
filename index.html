@@ -14,31 +14,12 @@
       <div class="row">
    		<H1>Know your Neighborhood!</H1>
       </div>
-      <!--
-   		<div class="row">
-        <div class="col-md-6 col-sm-12">
-   			<label for="address">Address</label><input id="address" data-bind="value: address" type="text"/>
-      </div>
-      <div class="col-md-6 col-sm-12">
-   			<label for="city">City</label><input id="city" data-bind="value: city" type="text"/>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-        <span>Size</span><div id="slider"></div>
-        </div>
-      </div>
-      <div>
-        <div class="col-md-6">
-  			<button id="generateMap" data-bind="click: generateMap">Find</button>
-      </div>
-    -->
       <div class="col-md-6">
         <input data-bind="value: filter"><button data-bind="click: filterMap">Filter</button>
       </div>
    		</div>
       <ul id="search"  data-bind="foreach: displayMarkers">
-        <li class="search-item" ><span href="#" data-bind="text: title, click:$parent.toggleBounce"></span></li>
+        <li class="search-item" ><span class="search-marker" href="#" data-bind="text: title"></span></li>
       </ul>
       <div class="row">
         <p class="weather" data-bind="text: localWeather"/>
