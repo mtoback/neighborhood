@@ -18,6 +18,7 @@ var viewModel = {
 	searches : ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
 	markers : ko.observableArray(),
 	displayMarkers: ko.observableArray(),
+    currentMarker : ko.observable(),
 	searchTag : ko.observable(),
 	localWeather : ko.observable(),
 	filter: ko.observable(""),
@@ -181,13 +182,16 @@ var viewModel = {
 				   detailed entry
 				**/
 				function toggleBounce(item) {
-				  if (marker.getAnimation() !== null) {
-				    marker.setAnimation(null);
-				  } else {
-				    marker.setAnimation(google.maps.Animation.BOUNCE);
-				  }
-				  $("#about").html("<a href='" + marker.url + "'>" + marker.title + "</a>" +
-				  	"  <span>" + marker.categories + "</span>");
+                  if (typeof viewModel.currentMarker() != 'undefined'){
+                    var marker = viewModel.currentMarker();
+                      if (marker.getAnimation() !== null) {
+                        marker().setAnimation(null);
+                      }
+                  }
+                    viewModel.currentMarker(item);
+    			    item.setAnimation(google.maps.Animation.BOUNCE);
+				  $("#about").html("<a href='" + item.url + "'>" + item.title + "</a>" +
+				  	"  <span>" + item.categories + "</span>");
 				  $("#about").show();
 				}
 				marker.addListener('click', toggleBounce);
@@ -241,20 +245,22 @@ viewModel.radius_filter = ko.computed(function(){
    detailed entry
 **/
 $("#search").on("click","li span", function(){
+  if (typeof viewModel.currentMarker() != 'undefined'){
+    var marker = viewModel.currentMarker();
+      if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+      }
+  }
 	var title = $(this).html();
 	viewModel.displayMarkers().forEach(function(marker){
 		if (marker.title === title){
-		  if (marker.getAnimation() !== null) {
-		    marker.setAnimation(null);
-		  } else {
 		    marker.setAnimation(google.maps.Animation.BOUNCE);
+            viewModel.currentMarker(marker);
 		  }
-		  $("#about").html("<a href='" + marker.url + "'>" + marker.title + "</a>" +
-						  	"  <span>" + marker.categories + "</span>");
-		  $("#about").show();
-		}
-	});
-
+	  $("#about").html("<a href='" + marker.url + "'>" + marker.title + "</a>" +
+					  	"  <span>" + marker.categories + "</span>");
+	  $("#about").show();
+		});
 });
 
 ko.applyBindings(viewModel);
