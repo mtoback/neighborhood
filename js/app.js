@@ -23,7 +23,7 @@ var ViewModel = function() {
         this.localWeather = ko.observable();
         this.filter = ko.observable('');
         this.zoom = ko.observable(12);
-    }
+    };
     /**
    when you click on the list, you want it to bounce the marker and generate the
    detailed entry
@@ -32,8 +32,8 @@ ViewModel.prototype.updateMarker = function(marker) {
     if (typeof viewModel.currentMarker() !== 'undefined') {
         var aMarker = viewModel.currentMarker();
         // do nothing if this is this same as the current marker
-        if (aMarker.title === marker.title){
-            return
+        if (aMarker.title === marker.title) {
+            return;
         }
         if (aMarker.getAnimation() !== null) {
             aMarker.setAnimation(null);
@@ -143,7 +143,7 @@ function initialize() {
             }
         }
     });
-};
+}
 /**
 	initialize yelp and get generate marker array
 	**/
@@ -224,7 +224,7 @@ function initYelp(viewModel, map) {
                     if (typeof viewModel.currentMarker() !== 'undefined') {
                         var aMarker = viewModel.currentMarker();
                         // do nothing if the same as current marker
-                        if(aMarker.title === marker.title){
+                        if (aMarker.title === marker.title) {
                             return;
                         }
                         if (aMarker.getAnimation() !== null) {
