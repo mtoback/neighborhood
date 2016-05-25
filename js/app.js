@@ -28,7 +28,7 @@ var viewModel = {
    detailed entry
 **/
     updateMarker: function(marker) {
-        if (typeof viewModel.currentMarker() != 'undefined') {
+        if (typeof viewModel.currentMarker() !== 'undefined') {
             var aMarker = viewModel.currentMarker();
             if (aMarker.getAnimation() !== null) {
                 aMarker.setAnimation(null);
@@ -42,7 +42,7 @@ var viewModel = {
 	 execute the filter. Also, clear the detail entry
 	**/
     filterMap: function() {
-        if (typeof viewModel.currentMarker() != 'undefined') {
+        if (typeof viewModel.currentMarker() !== 'undefined') {
             var marker = viewModel.currentMarker();
             if (marker.getAnimation() !== null) {
                 marker.setAnimation(null);
@@ -210,7 +210,7 @@ function initYelp(viewModel, map) {
 				   detailed entry
 				**/
                 function toggleBounce() {
-                    if (typeof viewModel.currentMarker() != 'undefined') {
+                    if (typeof viewModel.currentMarker() !== 'undefined') {
                         var aMarker = viewModel.currentMarker();
                         if (aMarker.getAnimation() !== null) {
                             aMarker.setAnimation(null);
