@@ -162,14 +162,14 @@ function initYelp(viewModel, map) {
     var parameters = {
         oauth_consumer_key: auth.consumerKey,
         oauth_token: auth.accessToken,
-        oauth_nonce: nonce_generate(),
+        oauth_nonce: nonceGenerate(),
         oauth_timestamp: Math.floor(Date.now() / 1000),
         oauth_signature_method: 'HMAC-SHA1',
         oauth_version: '1.0',
         callback: 'cb',
         term: 'restaurant',
         location: 'Saratoga CA',
-        radius_filter: viewModel.radius_filter()
+        radius_filter: viewModel.radiusFilter()
     };
     var message = {
         'action': 'http://api.yelp.com/v2/search',
@@ -246,7 +246,7 @@ function initYelp(viewModel, map) {
 /**
 	  generate nonce for yelp api
 	**/
-function nonce_generate() {
+function nonceGenerate() {
     return (Math.floor(Math.random() * 1e12).toString());
 }
 // Sets the map on all markers in the array.
@@ -260,7 +260,7 @@ function setMapOnAll(map, markers) {
 /**
 convert Google map zoom setting to yelp radius filter
 **/
-viewModel.radius_filter = ko.computed(function() {
+viewModel.radiusFilter = ko.computed(function() {
     if (this.zoom() === 11) {
         return 40000;
     } else if (this.zoom() === 12) {
