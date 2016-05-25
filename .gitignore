@@ -1,2 +1,6 @@
 .DS_Store
+npm-debug.log
 node_modules/
+validation-report.json
+validation-status.json
+w3cErrors/
