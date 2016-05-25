@@ -24,6 +24,21 @@ var viewModel = {
     filter: ko.observable(''),
     zoom: ko.observable(12),
     /**
+   when you click on the list, you want it to bounce the marker and generate the
+   detailed entry
+**/
+    updateMarker: function(marker) {
+        if (typeof viewModel.currentMarker() != 'undefined') {
+            var aMarker = viewModel.currentMarker();
+            if (aMarker.getAnimation() !== null) {
+                aMarker.setAnimation(null);
+            }
+        }
+        viewModel.currentMarker(marker);
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    },
+
+    /**
 	 execute the filter. Also, clear the detail entry
 	**/
     filterMap: function() {
@@ -116,7 +131,7 @@ var viewModel = {
                 alert('unknown error occurred... status = ' + xhr.status);
             }
         }
-     });
+    });
 })(viewModel);
 /**
 	initialize yelp and get generate marker array
@@ -250,24 +265,5 @@ viewModel.radius_filter = ko.computed(function() {
     }
 }, viewModel);
 
-/**
-   when you click on the list, you want it to bounce the marker and generate the
-   detailed entry
-**/
-$('#search').on('click', 'li span', function() {
-    if (typeof viewModel.currentMarker() != 'undefined') {
-        var marker = viewModel.currentMarker();
-        if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-        }
-    }
-    var title = $(this).html();
-    viewModel.displayMarkers().forEach(function(marker) {
-        if (marker.title === title) {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            viewModel.currentMarker(marker);
-        }
-    });
-});
 
 ko.applyBindings(viewModel);

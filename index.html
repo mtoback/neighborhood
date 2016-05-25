@@ -19,7 +19,7 @@
       </div>
    		</div>
       <ul id="search"  class="search" data-bind="foreach: displayMarkers">
-        <li class="search-item" ><span class="search-marker" href="#" data-bind="text: title"></span></li>
+        <li class="search-item" ><span class="search-marker" data-bind="text: title, click:$parent.updateMarker"></span></li>
       </ul>
       <div class="row">
         <p class="weather" data-bind="text: localWeather"/>
