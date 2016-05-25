@@ -13,99 +13,106 @@ var map;
    The view model tracks the markers returned as a static list and the displayMarkers, markers displayed,
    as a dynamic list.
 **/
-var viewModel = {
-    location: ko.observable('18764 Cox Ave, Saratoga CA'),
-    searches: ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']),
-    markers: ko.observableArray(),
-    displayMarkers: ko.observableArray(),
-    currentMarker: ko.observable(),
-    searchTag: ko.observable(),
-    localWeather: ko.observable(),
-    filter: ko.observable(''),
-    zoom: ko.observable(12),
+var ViewModel = function() {
+        this.location = ko.observable('18764 Cox Ave, Saratoga CA');
+        this.searches = ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']);
+        this.markers = ko.observableArray();
+        this.displayMarkers = ko.observableArray();
+        this.currentMarker = ko.observable();
+        this.searchTag = ko.observable();
+        this.localWeather = ko.observable();
+        this.filter = ko.observable('');
+        this.zoom = ko.observable(12);
+    }
     /**
    when you click on the list, you want it to bounce the marker and generate the
    detailed entry
 **/
-    updateMarker: function(marker) {
-        if (typeof viewModel.currentMarker() !== 'undefined') {
-            var aMarker = viewModel.currentMarker();
-            if (aMarker.getAnimation() !== null) {
-                aMarker.setAnimation(null);
-            }
+ViewModel.prototype.updateMarker = function(marker) {
+    if (typeof viewModel.currentMarker() !== 'undefined') {
+        var aMarker = viewModel.currentMarker();
+        if (aMarker.getAnimation() !== null) {
+            aMarker.setAnimation(null);
         }
-        viewModel.currentMarker(marker);
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-    },
-
-    /**
-	 execute the filter. Also, clear the detail entry
-	**/
-    filterMap: function() {
-        if (typeof viewModel.currentMarker() !== 'undefined') {
-            var marker = viewModel.currentMarker();
-            if (marker.getAnimation() !== null) {
-                marker.setAnimation(null);
-            }
-        }
-        var filter = viewModel.filter();
-        if (viewModel.markers().length > 0) {
-            setMapOnAll(null, viewModel.displayMarkers());
-            viewModel.displayMarkers.removeAll();
-            for (var i = 0; i < viewModel.markers().length; i++) {
-                if (viewModel.markers()[i].title.indexOf(filter) > -1) {
-                    viewModel.displayMarkers.push(viewModel.markers()[i]);
-                }
-            }
-            setMapOnAll(map, viewModel.displayMarkers());
-        }
-    },
-    // weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
-    // lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
-    weather: function(lat, lng) {
-        $.ajax({
-            url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true',
-            success: function(result) {
-                var components = result.results[0].address_components;
-                var len = components.length;
-                var foundCity = false;
-                var foundState = false;
-                var city = '';
-                var state = '';
-                // continue in loop until city and state found or items exhausted
-                for (var i = 0; i < len && !(foundCity && foundState); i++) {
-                    var component = components[i];
-                    if (component.types[0] === 'locality') {
-                        city = component.long_name;
-                        foundCity = true;
-                    } else if (component.types[0] === 'administrative_area_level_1') {
-                        state = component.short_name;
-                        found_state = true;
-                    }
-                }
-                // Call the weather API given the city/state associated with the lat/lng
-                $.ajax({
-                    url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json',
-                    success: function(result) {
-                        var forecast = result.forecast.simpleforecast.forecastday[0];
-                        var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
-                        var conditions = forecast.conditions;
-                        viewModel.localWeather(conditions + ':' + temp);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        if (xhr.status === 404) {
-                            alert('internet failure occurred. Please check your connection');
-                        } else {
-                            alert('unknown error occurred... status = ' + xhr.status);
-                        }
-                    }
-                });
-            }
-        });
-    },
-
+    }
+    viewModel.currentMarker(marker);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
 };
 
+/**
+	 execute the filter. Also, clear the detail entry
+	**/
+this.ViewModel.prototype.filterMap = function() {
+    if (typeof viewModel.currentMarker() !== 'undefined') {
+        var marker = viewModel.currentMarker();
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+        }
+    }
+    var filter = viewModel.filter();
+    if (viewModel.markers().length > 0) {
+        setMapOnAll(null, viewModel.displayMarkers());
+        viewModel.displayMarkers.removeAll();
+        for (var i = 0; i < viewModel.markers().length; i++) {
+            if (viewModel.markers()[i].title.indexOf(filter) > -1) {
+                viewModel.displayMarkers.push(viewModel.markers()[i]);
+            }
+        }
+        setMapOnAll(map, viewModel.displayMarkers());
+    }
+};
+// weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
+// lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
+ViewModel.prototype.weather = function(lat, lng) {
+    $.ajax({
+        url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true',
+        success: function(result) {
+            var components = result.results[0].address_components;
+            var len = components.length;
+            var foundCity = false;
+            var foundState = false;
+            var city = '';
+            var state = '';
+            // continue in loop until city and state found or items exhausted
+            for (var i = 0; i < len && !(foundCity && foundState); i++) {
+                var component = components[i];
+                if (component.types[0] === 'locality') {
+                    city = component.long_name;
+                    foundCity = true;
+                } else if (component.types[0] === 'administrative_area_level_1') {
+                    state = component.short_name;
+                    found_state = true;
+                }
+            }
+            // Call the weather API given the city/state associated with the lat/lng
+            $.ajax({
+                url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json',
+                success: function(result) {
+                    var forecast = result.forecast.simpleforecast.forecastday[0];
+                    var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
+                    var conditions = forecast.conditions;
+                    viewModel.localWeather(conditions + ':' + temp);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    if (xhr.status === 404) {
+                        alert('internet failure occurred. Please check your connection');
+                    } else {
+                        alert('unknown error occurred... status = ' + xhr.status);
+                    }
+                }
+            });
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            if (xhr.status === 404) {
+                alert('internet failure occurred. Please check your connection');
+            } else {
+                alert('unknown error occurred... status = ' + xhr.status);
+            }
+        }
+    });
+};
+
+var viewModel = new ViewModel();
 /**
    iife to get the map generated
 **/
