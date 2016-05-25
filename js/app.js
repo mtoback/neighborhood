@@ -116,7 +116,7 @@ var viewModel = new ViewModel();
 /**
    iife to get the map generated
 **/
-(function(viewModel) {
+function initialize() {
     $.ajax({
         url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location(),
         success: function(result) {
@@ -139,7 +139,7 @@ var viewModel = new ViewModel();
             }
         }
     });
-})(viewModel);
+};
 /**
 	initialize yelp and get generate marker array
 	**/
@@ -274,3 +274,5 @@ viewModel.radius_filter = ko.computed(function() {
 
 
 ko.applyBindings(viewModel);
+
+google.maps.event.addDomListener(window, 'load', initialize);
