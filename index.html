@@ -24,8 +24,9 @@
       <div class="row">
         <p class="weather" data-bind="text: localWeather"/>
       </div>
-    <div id="about" class="row">
-
+    <div data-bind="with:currentMarker" id="about" class="row">
+      <a data-bind="attr:{href:url}, text:title"></a>
+      <span data-bind="text:categories"></span>
     </div>
 		<div class="row"  id="googleMap" ></div>
    	</div>

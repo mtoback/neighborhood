@@ -191,9 +191,6 @@ function initYelp(viewModel, map) {
                     }
                     viewModel.currentMarker(marker);
                     marker.setAnimation(google.maps.Animation.BOUNCE);
-                    $("#about").html("<a href='" + marker.url + "'>" + marker.title + "</a>" +
-                        "  <span>" + marker.categories + "</span>");
-                    $("#about").show();
                 }
                 marker.addListener('click', toggleBounce);
                 // To add the marker to the map, call setMap();
@@ -257,9 +254,6 @@ $("#search").on("click", "li span", function() {
         if (marker.title === title) {
             marker.setAnimation(google.maps.Animation.BOUNCE);
             viewModel.currentMarker(marker);
-            $("#about").html("<a href='" + marker.url + "'>" + marker.title + "</a>" +
-                "  <span>" + marker.categories + "</span>");
-            $("#about").show();
         }
     });
 });
