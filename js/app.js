@@ -69,8 +69,8 @@ this.ViewModel.prototype.filterMap = function() {
 // lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 ViewModel.prototype.weather = function(lat, lng) {
     $.ajax({
-        url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true',
-        success: function(result) {
+        url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true'})
+        .done(function(result) {
             var components = result.results[0].address_components;
             var len = components.length;
             var foundCity = false;
@@ -90,30 +90,28 @@ ViewModel.prototype.weather = function(lat, lng) {
             }
             // Call the weather API given the city/state associated with the lat/lng
             $.ajax({
-                url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json',
-                success: function(result) {
+                url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json'})
+                .done(function(result) {
                     var forecast = result.forecast.simpleforecast.forecastday[0];
                     var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
                     var conditions = forecast.conditions;
                     viewModel.localWeather(conditions + ':' + temp);
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
+                })
+                .fail(function(xhr, ajaxOptions, thrownError) {
                     if (xhr.status === 404) {
                         alert('internet failure occurred. Please check your connection');
                     } else {
                         alert('unknown error occurred... status = ' + xhr.status);
                     }
-                }
-            });
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
+                });
+        })
+        .fail(function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
                 alert('internet failure occurred. Please check your connection');
             } else {
                 alert('unknown error occurred... status = ' + xhr.status);
             }
-        }
-    });
+        });
 };
 
 var viewModel = new ViewModel();
@@ -122,8 +120,8 @@ var viewModel = new ViewModel();
 **/
 function initialize() {
     $.ajax({
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location(),
-        success: function(result) {
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()})
+        .done(function(result) {
             lat = result.results[0].geometry.location.lat;
             lng = result.results[0].geometry.location.lng;
             viewModel.weather(lat, lng);
@@ -134,15 +132,14 @@ function initialize() {
             };
             map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
             initYelp(viewModel, map);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
+        })
+        .fail(function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
                 alert('internet failure occurred. Please check your connection');
             } else {
                 alert('unknown error occurred... status = ' + xhr.status);
             }
-        }
-    });
+        });
 }
 /**
 	initialize yelp and get generate marker array
