@@ -21,13 +21,18 @@ var viewModel = {
     currentMarker: ko.observable(),
     searchTag: ko.observable(),
     localWeather: ko.observable(),
-    filter: ko.observable(""),
+    filter: ko.observable(''),
     zoom: ko.observable(12),
     /**
 	 execute the filter. Also, clear the detail entry
 	**/
     filterMap: function() {
-        $("#about").html('');
+        if (typeof viewModel.currentMarker() != 'undefined') {
+            var marker = viewModel.currentMarker();
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            }
+        }
         var filter = viewModel.filter();
         if (viewModel.markers().length > 0) {
             setMapOnAll(null, viewModel.displayMarkers());
@@ -58,7 +63,7 @@ var viewModel = {
                     if (component.types[0] === 'locality') {
                         city = component.long_name;
                         foundCity = true;
-                    } else if (component.types[0] === "administrative_area_level_1") {
+                    } else if (component.types[0] === 'administrative_area_level_1') {
                         state = component.short_name;
                         found_state = true;
                     }
@@ -71,6 +76,13 @@ var viewModel = {
                         var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
                         var conditions = forecast.conditions;
                         viewModel.localWeather(conditions + ':' + temp);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        if (xhr.status === 404) {
+                            alert('internet failure occurred. Please check your connection');
+                        } else {
+                            alert('unknown error occurred... status = ' + xhr.status);
+                        }
                     }
                 });
             }
@@ -94,29 +106,29 @@ var viewModel = {
                 zoom: viewModel.zoom(),
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
             initYelp(viewModel, map);
         },
         error: function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
-                alert("internet failure occurred. Please check your connection");
+                alert('internet failure occurred. Please check your connection');
             } else {
-                alert("unknown error occurred... status = " + xhr.status);
+                alert('unknown error occurred... status = ' + xhr.status);
             }
         }
-    });
+     });
 })(viewModel);
 /**
 	initialize yelp and get generate marker array
 	**/
 function initYelp(viewModel, map) {
     var auth = {
-        consumerKey: "IuMIJl585jfMDHz7spOj3w",
-        consumerSecret: "8qnDc0yEa59ZHfXN1uM3XY-RcW4",
-        accessToken: "bfEYLApv2Hxfs0vDEh6TMRsOllsGYEG1",
-        accessTokenSecret: "zcavaTCQX2wlPIjvm4DqUzzGV94",
+        consumerKey: 'IuMIJl585jfMDHz7spOj3w',
+        consumerSecret: '8qnDc0yEa59ZHfXN1uM3XY-RcW4',
+        accessToken: 'bfEYLApv2Hxfs0vDEh6TMRsOllsGYEG1',
+        accessTokenSecret: 'zcavaTCQX2wlPIjvm4DqUzzGV94',
         serviceProvider: {
-            signatureMethod: "HMAC-SHA1"
+            signatureMethod: 'HMAC-SHA1'
         }
     };
 
@@ -133,7 +145,7 @@ function initYelp(viewModel, map) {
         oauth_signature_method: 'HMAC-SHA1',
         oauth_version: '1.0',
         callback: 'cb',
-        term: "restaurant",
+        term: 'restaurant',
         location: 'Saratoga CA',
         radius_filter: viewModel.radius_filter()
     };
@@ -143,9 +155,9 @@ function initYelp(viewModel, map) {
         'parameters': parameters
     };
 
-    var yelp_url = "https://api.yelp.com/v2/search";
-    var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, "8qnDc0yEa59ZHfXN1uM3XY-RcW4",
-        "zcavaTCQX2wlPIjvm4DqUzzGV94");
+    var yelp_url = 'https://api.yelp.com/v2/search';
+    var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, '8qnDc0yEa59ZHfXN1uM3XY-RcW4',
+        'zcavaTCQX2wlPIjvm4DqUzzGV94');
     parameters.oauth_signature = encodedSignature;
     $.ajax({
         url: yelp_url,
@@ -174,7 +186,7 @@ function initYelp(viewModel, map) {
                     animation: google.maps.Animation.DROP,
                     title: name,
                     url: url,
-                    categories: categories.join(", ")
+                    categories: categories.join(', ')
                 });
                 viewModel.markers.push(marker);
                 viewModel.displayMarkers.push(marker);
@@ -197,14 +209,14 @@ function initYelp(viewModel, map) {
                 marker.setMap(map);
             });
             if (businesses.length > 0) {
-                $("#search").show();
+                $('#search').show();
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
-                alert("internet failure occurred. Please check your connection");
+                alert('internet failure occurred. Please check your connection');
             } else {
-                alert("unknown error occurred... status = " + xhr.status);
+                alert('unknown error occurred... status = ' + xhr.status);
             }
         }
     });
@@ -242,7 +254,7 @@ viewModel.radius_filter = ko.computed(function() {
    when you click on the list, you want it to bounce the marker and generate the
    detailed entry
 **/
-$("#search").on("click", "li span", function() {
+$('#search').on('click', 'li span', function() {
     if (typeof viewModel.currentMarker() != 'undefined') {
         var marker = viewModel.currentMarker();
         if (marker.getAnimation() !== null) {

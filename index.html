@@ -18,17 +18,17 @@
         <input data-bind="value: filter"><button data-bind="click: filterMap">Filter</button>
       </div>
    		</div>
-      <ul id="search"  data-bind="foreach: displayMarkers">
+      <ul id="search"  class="search" data-bind="foreach: displayMarkers">
         <li class="search-item" ><span class="search-marker" href="#" data-bind="text: title"></span></li>
       </ul>
       <div class="row">
         <p class="weather" data-bind="text: localWeather"/>
       </div>
-    <div data-bind="with:currentMarker" id="about" class="row">
+    <div data-bind="with:currentMarker" id="about" class="row about">
       <a data-bind="attr:{href:url}, text:title"></a>
       <span data-bind="text:categories"></span>
     </div>
-		<div class="row"  id="googleMap" ></div>
+		<div class="row googleMap "  id="googleMap" ></div>
    	</div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>
     <script src="js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
