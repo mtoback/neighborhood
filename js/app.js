@@ -31,6 +31,10 @@ var ViewModel = function() {
 ViewModel.prototype.updateMarker = function(marker) {
     if (typeof viewModel.currentMarker() !== 'undefined') {
         var aMarker = viewModel.currentMarker();
+        // do nothing if this is this same as the current marker
+        if (aMarker.title === marker.title){
+            return
+        }
         if (aMarker.getAnimation() !== null) {
             aMarker.setAnimation(null);
         }
@@ -219,6 +223,10 @@ function initYelp(viewModel, map) {
                 function toggleBounce() {
                     if (typeof viewModel.currentMarker() !== 'undefined') {
                         var aMarker = viewModel.currentMarker();
+                        // do nothing if the same as current marker
+                        if(aMarker.title === marker.title){
+                            return;
+                        }
                         if (aMarker.getAnimation() !== null) {
                             aMarker.setAnimation(null);
                         }
@@ -275,4 +283,4 @@ viewModel.radiusFilter = ko.computed(function() {
 
 ko.applyBindings(viewModel);
 
-google.maps.event.addDomListener(window, 'load', initialize);
+//google.maps.event.addDomListener(window, 'load', initialize);
