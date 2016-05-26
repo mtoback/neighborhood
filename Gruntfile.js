@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'img',
-                    src: ['icons/*', 'markers/*'],
+                    src: ['favicon.png', 'icons/*', 'markers/*'],
                     dest: 'dist/img/'
                 }]
             },

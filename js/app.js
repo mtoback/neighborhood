@@ -65,6 +65,7 @@ this.ViewModel.prototype.filterMap = function() {
         setMapOnAll(map, viewModel.displayMarkers());
     }
 };
+
 // weather example: http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/CA/Saratoga.json
 // lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 ViewModel.prototype.weather = function(lat, lng) {
@@ -115,6 +116,9 @@ ViewModel.prototype.weather = function(lat, lng) {
 };
 
 var viewModel = new ViewModel();
+// code needed to bind the filter string to the filterMap routine
+viewModel.filter.subscribe(viewModel.filterMap);
+
 /**
    iife to get the map generated
 **/

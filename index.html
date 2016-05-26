@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content=" Neighborhood map application ">
     <meta name="author" content="Michael Toback">
@@ -15,15 +16,18 @@
       <div class="row">
    		<H1>Know your Neighborhood!</H1>
       </div>
+      <div class="row">
       <div class="col-md-6">
-        <input data-bind="value: filter"><button data-bind="click: filterMap">Filter</button>
+        <label for="filter">Filter:</label><input id="filter" data-bind="valueUpdate: 'keyup', value: filter" autocomplete="off">
       </div>
    		</div>
       <ul id="search"  class="search" data-bind="foreach: displayMarkers">
-        <li class="search-item" ><span class="search-marker" data-bind="text: title, click:$parent.updateMarker"></span></li>
+        <li class="search-item" ><button class="search-marker btn btn-info btn-block" data-bind="text: title, click:$parent.updateMarker"></button></li>
       </ul>
       <div class="row">
+        <div class="col-md-6">
         <p class="weather" data-bind="text: localWeather"></p>
+      </div>
       </div>
     <div data-bind="with:currentMarker" id="about" class="row about">
       <a data-bind="attr:{href:url}, text:title"></a>
@@ -31,6 +35,7 @@
     </div>
 		<div class="row googleMap "  id="googleMap" >
    	</div>
+   </div>
     <script src="js/lib/jquery-2.2.3.min.js"></script>
     <script src="js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
     <script src="js/lib/knockout-3.4.0.js"></script>

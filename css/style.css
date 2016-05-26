@@ -1,24 +1,35 @@
+body {
+  width: 350px;
+  margin-right: auto;
+  margin-left: auto;
+  font-family: "Times New Roman", Georgia, Serif;
+}
+
+h1 {
+  font-family: Verdana, sans-serif
+}
 .weather {
 	background-color: lightgrey;
+  font-family: Verdana, sans-serif;
+  padding-left: 20px;
 }
 
-
-body {
-  margin-left: 25px;
-}
 .search {
-   display:none;
-   border: 1px solid lightgrey;
+   display: none;
+   height: 200px;
+   width: 300px;
    overflow: auto;
 }
 
 .search-item {
  list-style:none;
+ margin-left: -37px;
+ height: 40px;
+ font-size: 22px;
 }
 
 .googleMap {
-   width:500px;
-   height:380px;
+  height: 300px;
 }
 
 .about {
