@@ -1,23 +1,95 @@
 body {
-  width: 350px;
-  margin-right: auto;
-  margin-left: auto;
   font-family: "Times New Roman", Georgia, Serif;
 }
 
 h1 {
   font-family: Verdana, sans-serif
 }
+.search-marker {
+  display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
 .weather {
 	background-color: lightgrey;
   font-family: Verdana, sans-serif;
-  padding-left: 20px;
+  display:block;
+  margin:0 -15px 0 -15px;
 }
 
+@media (max-width: 767px){
+  .row {
+   max-width: 350px;
+  }
+  .search {
+    max-height: 200px;
+  }
+  .search-marker{
+    width: 200px;
+  }
+.googleMap {
+  height: 200px;
+}
+}
+
+@media (min-width: 768px) and (max-width: 1024px){
+  .row {
+   max-width: 500px;
+  }
+  .search {
+    max-height: 300px;
+  }
+  .search-marker{
+    width: 300px;
+  }
+.googleMap {
+  height: 250px;
+}
+}
+
+@media(min-width: 1025px){
+  .row {
+   max-width: 700px;
+  }
+  .search {
+    max-height: 400px;
+  }
+  .search-marker{
+    width: 400px;
+  }
+.googleMap {
+  height: 300px;
+}
+}
+
+.row {
+  margin-right: auto;
+  margin-left: auto;
+}
 .search {
+   margin-right: auto;
+   margin-left: auto;
    display: none;
-   height: 200px;
-   width: 300px;
    overflow: auto;
 }
 
@@ -28,9 +100,6 @@ h1 {
  font-size: 22px;
 }
 
-.googleMap {
-  height: 300px;
-}
 
 .about {
     border: 2px solid lightgrey;

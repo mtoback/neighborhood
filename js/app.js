@@ -14,17 +14,17 @@ var map;
    as a dynamic list.
 **/
 var ViewModel = function() {
-        this.location = ko.observable('18764 Cox Ave, Saratoga CA');
-        this.searches = ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']);
-        this.markers = ko.observableArray();
-        this.displayMarkers = ko.observableArray();
-        this.currentMarker = ko.observable();
-        this.searchTag = ko.observable();
-        this.localWeather = ko.observable();
-        this.filter = ko.observable('');
-        this.zoom = ko.observable(12);
-    };
-    /**
+    this.location = ko.observable('18764 Cox Ave, Saratoga CA');
+    this.searches = ko.observableArray(['Post Office', 'Restaurant', 'Grocery Stores']);
+    this.markers = ko.observableArray();
+    this.displayMarkers = ko.observableArray();
+    this.currentMarker = ko.observable();
+    this.searchTag = ko.observable();
+    this.localWeather = ko.observable();
+    this.filter = ko.observable('');
+    this.zoom = ko.observable(12);
+};
+/**
    when you click on the list, you want it to bounce the marker and generate the
    detailed entry
 **/
@@ -53,12 +53,12 @@ this.ViewModel.prototype.filterMap = function() {
             marker.setAnimation(null);
         }
     }
-    var filter = viewModel.filter();
+    var filter = viewModel.filter().toLowerCase();
     if (viewModel.markers().length > 0) {
         setMapOnAll(null, viewModel.displayMarkers());
         viewModel.displayMarkers.removeAll();
         for (var i = 0; i < viewModel.markers().length; i++) {
-            if (viewModel.markers()[i].title.indexOf(filter) > -1) {
+            if (viewModel.markers()[i].title.toLowerCase().indexOf(filter) > -1) {
                 viewModel.displayMarkers.push(viewModel.markers()[i]);
             }
         }
@@ -70,7 +70,8 @@ this.ViewModel.prototype.filterMap = function() {
 // lat long -> city : http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
 ViewModel.prototype.weather = function(lat, lng) {
     $.ajax({
-        url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true'})
+        url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&sensor=true'
+    })
         .done(function(result) {
             var components = result.results[0].address_components;
             var len = components.length;
@@ -91,7 +92,8 @@ ViewModel.prototype.weather = function(lat, lng) {
             }
             // Call the weather API given the city/state associated with the lat/lng
             $.ajax({
-                url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json'})
+                url: 'http://api.wunderground.com/api/421920ddc8bd7347/forecast/q/' + state + '/' + city + '.json'
+            })
                 .done(function(result) {
                     var forecast = result.forecast.simpleforecast.forecastday[0];
                     var temp = forecast.low.fahrenheit + '-' + forecast.high.fahrenheit;
@@ -124,7 +126,8 @@ viewModel.filter.subscribe(viewModel.filterMap);
 **/
 function initialize() {
     $.ajax({
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()})
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()
+    })
         .done(function(result) {
             lat = result.results[0].geometry.location.lat;
             lng = result.results[0].geometry.location.lng;
@@ -252,6 +255,11 @@ function initYelp(viewModel, map) {
         }
     });
 }
+/** error handler for google map **/
+function googleError() {
+    alert("google map did not load due to unknown error");
+}
+
 /**
 	  generate nonce for yelp api
 	**/
