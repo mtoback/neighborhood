@@ -41,7 +41,7 @@ ViewModel.prototype.updateMarker = function(marker) {
         }
     }
     viewModel.currentMarker(marker);
-    if (typeof infowindow != "undefined") {
+    if (typeof infowindow !== "undefined") {
         infowindow.close();
     }
     infowindow = new google.maps.InfoWindow({
@@ -290,7 +290,7 @@ function initYelp(viewModel, map) {
                         }
                     }
                     viewModel.currentMarker(marker);
-                    if (typeof infowindow != "undefined") {
+                    if (typeof infowindow !== "undefined") {
                         infowindow.close();
                     }
                     infowindow = new google.maps.InfoWindow({
