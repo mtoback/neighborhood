@@ -5,6 +5,7 @@
 **/
 /** declare map as a global variable so it is visible to both the view model and markers */
 var map;
+var infowindow;
 /**
    view model handles *most* of the interaction between the view and the model. The exception
    is when you click on the markers, either the markers themselves or the list. That is handled
@@ -40,6 +41,14 @@ ViewModel.prototype.updateMarker = function(marker) {
         }
     }
     viewModel.currentMarker(marker);
+    if (typeof infowindow != "undefined") {
+        infowindow.close();
+    }
+    infowindow = new google.maps.InfoWindow({
+        content: '<a target="_blank" href="' + marker.url + '">' + marker.title + '</a>' +
+            '<span>&nbsp;' + marker.categories + '</span>'
+    });
+    infowindow.open(map, marker);
     marker.setAnimation(google.maps.Animation.BOUNCE);
 };
 
@@ -102,17 +111,17 @@ ViewModel.prototype.weather = function(lat, lng) {
                 })
                 .fail(function(xhr, ajaxOptions, thrownError) {
                     if (xhr.status === 404) {
-                        alert('internet failure occurred. Please check your connection');
+                        alert('internet failure occurred on weather API. Please check your connection');
                     } else {
-                        alert('unknown error occurred... status = ' + xhr.status);
+                        alert('unknown error occurred on weather API... status = ' + xhr.status);
                     }
                 });
         })
         .fail(function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
-                alert('internet failure occurred. Please check your connection');
+                alert('internet failure occurred on Google Map API. Please check your connection');
             } else {
-                alert('unknown error occurred... status = ' + xhr.status);
+                alert('unknown error occurred on Google Map API... status = ' + xhr.status);
             }
         });
 };
@@ -125,12 +134,15 @@ viewModel.filter.subscribe(viewModel.filterMap);
    iife to get the map generated
 **/
 function initialize() {
-    $.ajax({
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()
-    })
-        .done(function(result) {
-            lat = result.results[0].geometry.location.lat;
-            lng = result.results[0].geometry.location.lng;
+    /**
+    leverage geolocation API if available... see
+    https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation
+    **/
+    if ("geolocation" in navigator) {
+        /* geolocation is available */
+        navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
             viewModel.weather(lat, lng);
             var mapProp = {
                 center: new google.maps.LatLng(lat, lng),
@@ -139,14 +151,56 @@ function initialize() {
             };
             map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
             initYelp(viewModel, map);
-        })
-        .fail(function(xhr, ajaxOptions, thrownError) {
-            if (xhr.status === 404) {
-                alert('internet failure occurred. Please check your connection');
-            } else {
-                alert('unknown error occurred... status = ' + xhr.status);
-            }
+        }, function() {
+            alert("This browser does not have geolocation on. Using default location instead.");
+            $.ajax({
+                url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()
+            })
+                .done(function(result) {
+                    lat = result.results[0].geometry.location.lat;
+                    lng = result.results[0].geometry.location.lng;
+                    viewModel.weather(lat, lng);
+                    var mapProp = {
+                        center: new google.maps.LatLng(lat, lng),
+                        zoom: viewModel.zoom(),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
+                    initYelp(viewModel, map);
+                })
+                .fail(function(xhr, ajaxOptions, thrownError) {
+                    if (xhr.status === 404) {
+                        alert('internet failure occurred. Please check your connection');
+                    } else {
+                        alert('unknown error occurred... status = ' + xhr.status);
+                    }
+                });
         });
+    } else {
+        /* geolocation IS NOT available */
+        $.ajax({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + viewModel.location()
+        })
+            .done(function(result) {
+                lat = result.results[0].geometry.location.lat;
+                lng = result.results[0].geometry.location.lng;
+                viewModel.weather(lat, lng);
+                var mapProp = {
+                    center: new google.maps.LatLng(lat, lng),
+                    zoom: viewModel.zoom(),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
+                initYelp(viewModel, map);
+            })
+            .fail(function(xhr, ajaxOptions, thrownError) {
+                if (xhr.status === 404) {
+                    alert('internet failure occurred. Please check your connection');
+                } else {
+                    alert('unknown error occurred... status = ' + xhr.status);
+                }
+            });
+    }
 }
 /**
 	initialize yelp and get generate marker array
@@ -236,6 +290,14 @@ function initYelp(viewModel, map) {
                         }
                     }
                     viewModel.currentMarker(marker);
+                    if (typeof infowindow != "undefined") {
+                        infowindow.close();
+                    }
+                    infowindow = new google.maps.InfoWindow({
+                        content: '<a target="_blank" href="' + marker.url + '">' + marker.title + '</a>' +
+                            '<span>&nbsp;' + marker.categories + '</span>'
+                    });
+                    infowindow.open(map, marker);
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                 }
                 marker.addListener('click', toggleBounce);
@@ -248,9 +310,9 @@ function initYelp(viewModel, map) {
         },
         error: function(xhr, ajaxOptions, thrownError) {
             if (xhr.status === 404) {
-                alert('internet failure occurred. Please check your connection');
+                alert('internet failure occurred on Yelp API. Please check your connection');
             } else {
-                alert('unknown error occurred... status = ' + xhr.status);
+                alert('unknown error occurred on Yelp API... status = ' + xhr.status);
             }
         }
     });
