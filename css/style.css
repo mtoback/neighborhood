@@ -37,6 +37,10 @@ h1 {
   margin:0 -15px 0 -15px;
 }
 
+.googleMap {
+    padding-bottom: 5%;
+ }
+
 @media (max-width: 767px){
   .row {
    max-width: 350px;
@@ -44,41 +48,44 @@ h1 {
   .search {
     max-height: 200px;
   }
-  .search-marker{
-    width: 200px;
+  .about, .weather,.search-marker{
+    width: 350px;
   }
 .googleMap {
   height: 200px;
+  width: 350px;
 }
 }
 
 @media (min-width: 768px) and (max-width: 1024px){
   .row {
-   max-width: 500px;
+   max-width: 400px;
   }
   .search {
     max-height: 300px;
   }
-  .search-marker{
-    width: 300px;
+  .about, .weather,.search-marker{
+    width: 400px;
   }
 .googleMap {
-  height: 250px;
+  height: 300px;
+  width: 400px;
 }
 }
 
 @media(min-width: 1025px){
   .row {
-   max-width: 700px;
+   max-width: 450px;
   }
   .search {
     max-height: 400px;
   }
-  .search-marker{
-    width: 400px;
+  .about, .weather,.search-marker{
+    width: 450px;
   }
 .googleMap {
   height: 300px;
+  width: 450px;
 }
 }
 
