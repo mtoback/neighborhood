@@ -17,14 +17,16 @@ Icons for the map were obtained from http://map-icons.com/
 This program used the following node-modules to generate the production code via the Gruntfile.js file:
 - grunt
 - grunt-contrib-clean
-- grunt-contrib-concat
 - grunt-contrib-copy
+- grunt-contrib-csslint
 - grunt-contrib-cssmin
 - grunt-contrib-htmlmin
 - grunt-contrib-imagemin
 - grunt-contrib-jshint
 - grunt-contrib-uglify
+- grunt-jsdoc
 - grunt-responsive-images
+- grunt-w3c-html-validation
 - load-grunt-tasks
 
 The apis used were provided by
@@ -62,4 +64,5 @@ index.html - contains the single page of html
 style.css - any styles used to show the site
 app.js - the application javascript code
 
+Documentation for the javascript can be found at doc/index.html
 The user enters a valid location. Google map API converts that to a lat/long pair, which can then be used by the geolocation API to provide the nearest city/state. We leverage the location and one or more categories to find locations of interest via yelp. We leverage the lat/lng to generate the city/state to use with the weather.

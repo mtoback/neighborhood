@@ -26,6 +26,7 @@
     "grunt-contrib-imagemin": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
+    "grunt-jsdoc": "^2.1.0",
     "grunt-responsive-images": "^0.1.7",
     "grunt-w3c-html-validation": "^0.1.8",
     "load-grunt-tasks": "^3.5.0"

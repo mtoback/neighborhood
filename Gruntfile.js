@@ -105,6 +105,14 @@ module.exports = function(grunt) {
                     'dist/js/app.js': ['js/app.js'],
                 }
             }
+        },
+        jsdoc: {
+            dist: {
+                src: ['js/app.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
         }
     });
     grunt.registerTask('default', [
@@ -115,6 +123,7 @@ module.exports = function(grunt) {
         'htmlmin',
         'cssmin',
         'uglify',
-        'copy'
+        'copy',
+        'jsdoc'
     ]);
 }
