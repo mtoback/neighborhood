@@ -353,5 +353,3 @@ viewModel.radiusFilter = ko.computed(function() {
 
 
 ko.applyBindings(viewModel);
-
-//google.maps.event.addDomListener(window, 'load', initialize);
