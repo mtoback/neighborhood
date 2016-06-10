@@ -149,7 +149,7 @@ function initialize() {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
-            initYelp(viewModel, map);
+            initYelp(viewModel, map, lat, lng);
         }, function() {
             alert("This browser does not have geolocation on. Using default location instead.");
             $.ajax({
@@ -165,7 +165,7 @@ function initialize() {
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
                     map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
-                    initYelp(viewModel, map);
+                    initYelp(viewModel, map, lat, lng);
                 })
                 .fail(function(xhr, ajaxOptions, thrownError) {
                     if (xhr.status === 404) {
@@ -190,7 +190,7 @@ function initialize() {
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
                 map = new google.maps.Map(document.getElementById('googleMap'), mapProp);
-                initYelp(viewModel, map);
+                initYelp(viewModel, map, lat, lng);
             })
             .fail(function(xhr, ajaxOptions, thrownError) {
                 if (xhr.status === 404) {
@@ -202,7 +202,7 @@ function initialize() {
     }
 }
 /** initialize yelp and get generate marker array **/
-function initYelp(viewModel, map) {
+function initYelp(viewModel, map, lat, lng) {
     var auth = {
         consumerKey: 'IuMIJl585jfMDHz7spOj3w',
         consumerSecret: '8qnDc0yEa59ZHfXN1uM3XY-RcW4',
@@ -227,7 +227,7 @@ function initYelp(viewModel, map) {
         oauth_version: '1.0',
         callback: 'cb',
         term: 'restaurant',
-        location: 'Saratoga CA',
+        ll: lat + "," + lng,
         radius_filter: viewModel.radiusFilter()
     };
     var message = {
